@@ -97,9 +97,9 @@ gulp.task('styles', function(){
             browsers: ['last 2 versions']
         }))
 		.pipe(concat('main.css'))
-        .pipe(uncss({
-        	html: path.src.html
-        }))
+        //.pipe(uncss({
+        //	html: path.src.html
+        //}))
         .pipe(minifycss())
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest(path.build.css));
