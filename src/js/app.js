@@ -8,11 +8,12 @@ $(document).ready(function() {
 		self.getLast = function() {
 			return self.memory().split('')[self.memory().length - 1];
 		};
+		self.memoryMax = 26; // FIX THIS!!
 
 		self.evaluate = function() {
 			/* jslint evil: true */
-			self.display(eval(self.memory()).toString());
-			self.memory(self.display());
+			self.display(eval(self.memory()));
+			self.memory(self.display().toString());
 		};
 
 		self.allClear = function() {
@@ -47,11 +48,27 @@ $(document).ready(function() {
 					break;
 				case ',':
 					val = '.';
-					self.update(val);
+					if (this.commaValid()) {
+						self.update(val);
+					}
 					break;
 				default:
 					self.update(val);
 			}
+		};
+
+		self.commaValid = function() {
+			var mem = this.memory().split('');
+			var i;
+			for (i = mem.length - 1; i >= 0; i--) {
+				if (mem[i] === '.') {
+					return false;
+				}
+				if (this.isOperator(mem[i])) {
+					return true;
+				}
+			}
+			return true;
 		};
 
 		self.update = function(val) {
@@ -74,7 +91,7 @@ $(document).ready(function() {
 	}
 
 	var model =  {
-		operators: ['+', '-', '/', '*', '%','.'],
+		operators: ['+', '-', '/', '*', '%'],
 	};
 
 	var view = {

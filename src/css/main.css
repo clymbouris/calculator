@@ -1,6 +1,7 @@
 body {
 	background-color: #4B4E4E;
 	font-family: sans-serif;
+	margin-left: 25px;
 }
 
 #calculator {
@@ -16,19 +17,21 @@ body {
 	width: 375px;
 	height: 75px;
 	color: white;
-	font-size: 3em;
+	font-size: 2em;
 	text-align: right;
-	overflow: hidden;
+	overflow: wrap;
 }
 
 #memory {
 	width: 360px;
-	height: 25px;
+	height: 50px;
 	color: white;
 	background-color: #3E3E3E;
 	padding: 10px;
 	font-size: 1.5em;
-	margin-top: 20px;
+	margin-top: 40px;
+	border-radius: 10px;
+	word-wrap: break-word;
 }
 
 .keys {
