@@ -8,6 +8,7 @@ $(document).ready(function() {
 		.extend({ maxCharacters: self.maxCharacters });
 
 		self.display = ko.observable('');
+
 		self.getLast = function() {
 			return self.memory().split('')[self.memory().length - 1];
 		};
@@ -24,7 +25,9 @@ $(document).ready(function() {
 		self.allClear = function() {
 			self.memory('');
 			self.display('');
+			self.allowFirstOperator = false;
 		};
+
 		self.singleClear = function() {
 			self.memory(self.memory().slice(0, self.memory().length - 1));
 		};
@@ -41,20 +44,20 @@ $(document).ready(function() {
 					self.singleClear();
 					break;
 				case 'x':
-					if (self.memory().length > 0) {
+					if (self.memory().length > 0 || self.allowFirstOperator) {
 						val = '*';
 						self.update(val);
 					}
 					break;
 				case '/':
-					if (self.memory().length > 0) {
+					if (self.memory().length > 0 || self.allowFirstOperator) {
 						self.update(val);
 					}
 					break;
 				case '%':
 					if (self.memory().length > 0) {
-						self.update('*');
-						self.update('1/100');
+						self.update('*1/100');
+						self.evaluate();
 					}
 					break;
 				case ',':
@@ -103,6 +106,7 @@ $(document).ready(function() {
 
 	var model =  {
 		operators: ['+', '-', '/', '*', '%'],
+		signs: ['+', '-']
 	};
 
 	var view = {
