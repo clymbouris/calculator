@@ -17,12 +17,17 @@ $(document).ready(function() {
 		self.evaluate = function() {
 			/* jslint evil: true */
 			var calculation = parseFloat(eval(self.memory())).toPrecision(6);
-			self.display();
+			// Convert to Number to remove trailing zeros
+			self.display(Number(calculation));
 			self.memory('');
 			self.allowFirstOperator = true;
 		};
 
 		self.allowFirstOperator = false;
+
+		self.wrapInBrackets = function(str) {
+			return '(' + str + ')';
+		};
 
 		self.allClear = function() {
 			self.memory('');
@@ -60,6 +65,7 @@ $(document).ready(function() {
 					if (self.memory().length > 0) {
 						// FIX need to wrap ALL memory contents to brackets and then evaluate!!!
 						self.update('*1/100');
+						self.memory(self.wrapInBrackets(self.memory()));
 						self.evaluate();
 					}
 					break;
