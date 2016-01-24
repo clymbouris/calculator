@@ -3,12 +3,14 @@ $(document).ready(function() {
 	function ViewModel(arr) {
 		var self = this;
 
-		self.memory = ko.observable('');
+		self.maxCharacters = 52;
+		self.memory = ko.observable('')
+		.extend({ maxCharacters: self.maxCharacters });
+
 		self.display = ko.observable('');
 		self.getLast = function() {
 			return self.memory().split('')[self.memory().length - 1];
 		};
-		self.memoryMax = 26; // FIX THIS!!
 
 		self.evaluate = function() {
 			/* jslint evil: true */
