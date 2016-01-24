@@ -13,8 +13,21 @@ $(document).ready(function() {
 		self.getLast = function(str) {
 			return self.memory().split('')[self.memory().length - 1];
 		};
+		self.getFirst = function(str) {
+			return self.memory().split('')[0];
+		};
 
 		self.evaluate = function() {
+			// If there's a result already evaluated on display then append to memory to keep
+			// going with calculations
+			var displayLength = self.display().toString().length;
+			if (displayLength > 0 && (self.isOperator(self.getFirst()))) {
+				// Convert memory to array
+				var memArray = self.memory().toString().split('');
+				// Add display value to beginning
+				memArray.unshift(self.display());
+				self.memory(memArray.join(''));
+			}
 			/* jslint evil: true */
 			var calculation;
 			if (self.isDecimal(eval(self.memory()).toString())) {
@@ -38,10 +51,6 @@ $(document).ready(function() {
 				if(str[i] === '.') return true;
 			}
 			return false;
-		};
-
-		self.wrapInBrackets = function(str) {
-			return '(' + str + ')';
 		};
 
 		self.allClear = function() {
@@ -78,8 +87,8 @@ $(document).ready(function() {
 					break;
 				case '%':
 					if (self.memory().length > 0 || self.allowFirstOperator) {
+						self.evaluate();
 						self.update('*1/100');
-						self.memory(self.wrapInBrackets(self.memory()));
 						self.evaluate();
 					}
 					break;
@@ -128,7 +137,7 @@ $(document).ready(function() {
 	}
 
 	var model =  {
-		operators: ['+', '-', '/', '*', '%'],
+		operators: ['+', '-', '/', '*'],
 		signs: ['+', '-']
 	};
 
