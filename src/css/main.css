@@ -47,6 +47,10 @@ body {
 	border: 0;
 }
 
+.small {
+	font-size: 1.5em;
+}
+
 .operators {
 	background-color: #F79D3D;
 }

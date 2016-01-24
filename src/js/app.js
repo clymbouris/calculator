@@ -15,12 +15,18 @@ $(document).ready(function() {
 		self.evaluate = function() {
 			/* jslint evil: true */
 			self.display(eval(self.memory()));
-			self.memory(self.display().toString());
+			self.memory('');
+			self.allowFirstOperator = true;
 		};
+
+		self.allowFirstOperator = false;
 
 		self.allClear = function() {
 			self.memory('');
 			self.display('');
+		};
+		self.singleClear = function() {
+			self.memory(self.memory().slice(0, self.memory().length - 1));
 		};
 
 		self.verify = function(val) {
@@ -30,6 +36,9 @@ $(document).ready(function() {
 					break;
 				case 'AC':
 					self.allClear();
+					break;
+				case 'C':
+					self.singleClear();
 					break;
 				case 'x':
 					if (self.memory().length > 0) {
