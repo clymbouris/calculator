@@ -16,14 +16,29 @@ $(document).ready(function() {
 
 		self.evaluate = function() {
 			/* jslint evil: true */
-			var calculation = parseFloat(eval(self.memory())).toPrecision(6);
+			var calculation;
+			if (self.isDecimal(eval(self.memory()).toString())) {
+				calculation = parseFloat(eval(self.memory()).toPrecision(6));
+			}
+			else {
+				calculation = parseFloat(eval(self.memory()));
+			}
 			// Convert to Number to remove trailing zeros
 			self.display(Number(calculation));
+			// Clear memory
 			self.memory('');
 			self.allowFirstOperator = true;
 		};
 
 		self.allowFirstOperator = false;
+
+		self.isDecimal = function(str) {
+			var i;
+			for (i = 0; i < str.length; i++) {
+				if(str[i] === '.') return true;
+			}
+			return false;
+		};
 
 		self.wrapInBrackets = function(str) {
 			return '(' + str + ')';
@@ -62,8 +77,7 @@ $(document).ready(function() {
 					}
 					break;
 				case '%':
-					if (self.memory().length > 0) {
-						// FIX need to wrap ALL memory contents to brackets and then evaluate!!!
+					if (self.memory().length > 0 || self.allowFirstOperator) {
 						self.update('*1/100');
 						self.memory(self.wrapInBrackets(self.memory()));
 						self.evaluate();
