@@ -4,18 +4,20 @@ $(document).ready(function() {
 		var self = this;
 
 		self.maxCharacters = 52;
+
 		self.memory = ko.observable('')
 		.extend({ maxCharacters: self.maxCharacters });
 
 		self.display = ko.observable('');
 
-		self.getLast = function() {
+		self.getLast = function(str) {
 			return self.memory().split('')[self.memory().length - 1];
 		};
 
 		self.evaluate = function() {
 			/* jslint evil: true */
-			self.display(eval(self.memory()));
+			var calculation = parseFloat(eval(self.memory())).toPrecision(6);
+			self.display();
 			self.memory('');
 			self.allowFirstOperator = true;
 		};
@@ -56,6 +58,7 @@ $(document).ready(function() {
 					break;
 				case '%':
 					if (self.memory().length > 0) {
+						// FIX need to wrap ALL memory contents to brackets and then evaluate!!!
 						self.update('*1/100');
 						self.evaluate();
 					}
