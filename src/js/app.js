@@ -29,15 +29,13 @@ $(document).ready(function() {
 				self.memory(memArray.join(''));
 			}
 			/* jslint evil: true */
-			var calculation;
-			if (self.isDecimal(eval(self.memory()).toString())) {
-				calculation = parseFloat(eval(self.memory()).toPrecision(6));
-			}
-			else {
-				calculation = parseFloat(eval(self.memory()));
+			var calculation = parseFloat(eval(self.memory()));
+			if (self.isDecimal(calculation.toString())) {
+				// Deals with 0.1 + 0.2 error and 99999999999999/10 is not 10000000000000000
+				calculation = Math.floor(calculation * 100) / 100;
 			}
 			// Convert to Number to remove trailing zeros
-			self.display(Number(calculation));
+			self.display(Number(calculation).toString());
 			// Clear memory
 			self.memory('');
 			self.allowFirstOperator = true;
@@ -86,11 +84,17 @@ $(document).ready(function() {
 					}
 					break;
 				case '%':
-					if (self.memory().length > 0 || self.allowFirstOperator) {
+					// if there's something on the display use for calculations
+					if (self.display().length > 0) {
+						self.update(self.display().toString() + '*1/100');
+						self.evaluate();
+					}
+					else if (self.memory().length > 0 || self.allowFirstOperator) {
 						self.evaluate();
 						self.update('*1/100');
 						self.evaluate();
 					}
+					
 					break;
 				case ',':
 					val = '.';
